@@ -15,6 +15,8 @@ public class App extends JFrame {
 
     public static void init() {
 
+        //TODO: Title color: rgb (138, 255, 165)
+
         // Create the model
         Board model = new Board();
 
