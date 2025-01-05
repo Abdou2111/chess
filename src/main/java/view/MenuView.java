@@ -1,6 +1,7 @@
 package view;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -26,6 +27,8 @@ public class MenuView extends View {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
 
         setLayout(null);
         //================================ LABELS ==================================
@@ -114,5 +117,4 @@ public class MenuView extends View {
         label.setBounds(x, y, width, height);
         return label;
     }
-
 }
