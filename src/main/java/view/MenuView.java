@@ -13,6 +13,10 @@ public class MenuView extends View {
     private String TITLE_IMAGE_PATH = "src/main/resources/MenuTitle1.png";
     private JLabel settingsLabel;
     private JLabel startLabel;
+    private int width = 1024;
+    private int height = 768;
+    private int widthByTwo = width / 2;
+    private int heightByTwo = height / 2;
 
     public MenuView() {
         super();
@@ -26,7 +30,7 @@ public class MenuView extends View {
         setLayout(null);
         //================================ LABELS ==================================
         // Settings label:_____________________
-        settingsLabel = createLabel("Settings", 5, 5);
+        settingsLabel = createLabel("Settings", widthByTwo - 80, heightByTwo + 60);
         settingsLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -48,7 +52,7 @@ public class MenuView extends View {
         add(settingsLabel);
 
         // Start label:________________________
-        startLabel = createLabel("Start Game", 420, 350);
+        startLabel = createLabel("Start Game", widthByTwo - 110, heightByTwo);
         startLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -103,7 +107,7 @@ public class MenuView extends View {
     private JLabel createLabel(String text, int x, int y) {
         JLabel label = new JLabel(text);
         label.setForeground(new Color(255, 181, 255));
-        label.setFont(new Font("Arial", Font.PLAIN, 24));
+        label.setFont(new Font("Arial", Font.PLAIN, 40));
         FontMetrics metrics = label.getFontMetrics(label.getFont());
         int width = metrics.stringWidth(text);
         int height = metrics.getHeight();
