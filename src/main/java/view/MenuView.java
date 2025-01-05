@@ -1,5 +1,8 @@
 package view;
 
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.advanced.AdvancedPlayer;
+
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -7,17 +10,22 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class MenuView extends View {
     private Image titleImage;
     private String TITLE_IMAGE_PATH = "src/main/resources/MenuTitle1.png";
+    private String LABEL_HOVER_SOUND_PATH = "src/main/resources/HoverSound.wav";
+    private String LABEL_CLICK_SOUND_PATH = "src/main/resources/ClickSound.mp3";
     private JLabel settingsLabel;
     private JLabel startLabel;
     private int width = 1024;
     private int height = 768;
     private int widthByTwo = width / 2;
     private int heightByTwo = height / 2;
+
 
     public MenuView() {
         super();
@@ -37,7 +45,7 @@ public class MenuView extends View {
         settingsLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("Settings clicked");
+                playSound(LABEL_CLICK_SOUND_PATH);
                 //TODO: Open settings
             }
 
@@ -59,7 +67,7 @@ public class MenuView extends View {
         startLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("Start clicked");
+                playSound(LABEL_CLICK_SOUND_PATH);
                 //TODO: Start the game
             }
 
@@ -116,5 +124,31 @@ public class MenuView extends View {
         int height = metrics.getHeight();
         label.setBounds(x, y, width, height);
         return label;
+    }
+
+    /**
+     * Plays a sound from the specified file path.
+     *
+     * @param path the path to the sound file
+     */
+    private boolean isPlaying = false;
+
+    private void playSound(String path) {
+        if (isPlaying) return;
+        isPlaying = true;
+
+        new Thread(() -> {
+            try {
+                FileInputStream fileInputStream = new FileInputStream(path);
+                AdvancedPlayer player = new AdvancedPlayer(fileInputStream);
+                player.play();
+            } catch (FileNotFoundException e) {
+                System.err.println("Sound file not found: " + path);
+            } catch (JavaLayerException e) {
+                System.err.println("Error playing sound: " + e.getMessage());
+            } finally {
+                isPlaying = false;
+            }
+        }).start();
     }
 }

@@ -55,12 +55,16 @@ public abstract class View extends JPanel {
      */
     private void playMusic(String path) {
         new Thread(() -> {
-            try {
-                FileInputStream fileInputStream = new FileInputStream(path);
-                Player player = new Player(fileInputStream);
-                player.play();
-            } catch (FileNotFoundException | JavaLayerException e) {
-                e.printStackTrace();
+            while (true) {
+                try {
+                    FileInputStream fileInputStream = new FileInputStream(path);
+                    AdvancedPlayer player = new AdvancedPlayer(fileInputStream);
+
+                    // Play the MP3 file
+                    player.play();
+                } catch (JavaLayerException | IOException e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
     }
