@@ -1,7 +1,9 @@
 package view;
 
+import controller.GameController;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.advanced.AdvancedPlayer;
+import model.Board;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
@@ -52,12 +54,12 @@ public class MenuView extends View {
             // Change the color of the label when hovered
             @Override
             public void mouseEntered(MouseEvent e) {
-                settingsLabel.setForeground(Color.WHITE);
+                settingsLabel.setForeground(new Color(255, 181, 255));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                settingsLabel.setForeground(new Color(255, 181, 255));
+                settingsLabel.setForeground(Color.WHITE);
             }
         });
         add(settingsLabel);
@@ -69,17 +71,20 @@ public class MenuView extends View {
             public void mouseClicked(MouseEvent e) {
                 playSound(LABEL_CLICK_SOUND_PATH);
                 //TODO: Start the game
+                View gameView = new GameView();
+                GameController gameController = new GameController(new Board(), gameView);
+                gameController.start();
             }
 
             // Change the color of the label when hovered
             @Override
             public void mouseEntered(MouseEvent e) {
-                startLabel.setForeground(Color.WHITE);
+                startLabel.setForeground(new Color(255, 181, 255));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                startLabel.setForeground(new Color(255, 181, 255));
+                startLabel.setForeground(Color.WHITE);
             }
         });
         add(startLabel);
@@ -87,17 +92,8 @@ public class MenuView extends View {
 
     @Override
     protected void paintComponent(Graphics g) {
-        //================================ BACKGROUND ================================
-        if (backgroundImage != null) {
-            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-        }
-
-        //================================== TITLE ==================================
-        if (titleImage != null) {
-            int scaledWidth = titleImage.getWidth(this) * 2; // Scale width by 2
-            int scaledHeight = titleImage.getHeight(this) * 2; // Scale height by 2
-            g.drawImage(titleImage, getWidth() / 2 - scaledWidth / 2, 250, scaledWidth, scaledHeight, this);
-        }
+        drawBackground(g);
+        drawTitle(g);
 
         //TODO:
         // Draw the buttons
@@ -105,6 +101,30 @@ public class MenuView extends View {
         // Draw the credits
         // Draw the version
         // Draw the help
+    }
+
+    /**
+     * Draws the background image to the screen.
+     *
+     * @param g the graphics object to draw with
+     */
+    private void drawBackground(Graphics g) {
+        if (backgroundImage != null) {
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+
+    /**
+     * Draws the title image at the center of the screen.
+     *
+     * @param g the graphics object to draw with
+     */
+    private void drawTitle(Graphics g) {
+        if (titleImage != null) {
+            int scaledWidth = titleImage.getWidth(this);
+            int scaledHeight = titleImage.getHeight(this);
+            g.drawImage(titleImage, getWidth() / 2 - scaledWidth / 2, 300, scaledWidth, scaledHeight, this);
+        }
     }
 
     /**
@@ -117,7 +137,7 @@ public class MenuView extends View {
      */
     private JLabel createLabel(String text, int x, int y) {
         JLabel label = new JLabel(text);
-        label.setForeground(new Color(255, 181, 255));
+        label.setForeground(Color.WHITE);
         label.setFont(new Font("Arial", Font.PLAIN, 40));
         FontMetrics metrics = label.getFontMetrics(label.getFont());
         int width = metrics.stringWidth(text);
